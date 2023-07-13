@@ -1,16 +1,27 @@
-import { Result } from "../Result"
+import { Result, failure, success } from "../Result"
 
-type User = {id: string }
-type Trip = {id: string, location: string}
+type Product = {id: string}
+type Id = string & {_type: 'id'}; // Opaque type
 
-declare function getUser(name: string): Result<Error,User>; //can throw
-declare function getTripsForUser(userid: string): Result<Error,Trip[]>; //can throw
-declare function isInSameCountry(location: string, userLocation: string): boolean;
-declare function getLastestAdmissibleTrip(trip: Trip[]): Result<Error,Trip>;
+declare function handleCreation(product: Product): Id 
+declare function validateProduct(product: Product): Result<string,Product> 
+declare function checkForDuplicates(product: Product): Result<string,Product> 
+declare function generateProductCode(product: Product): string 
 
-const isLastTripInSameCountry = (userId: string, nextTrip: Trip): Result<Error, boolean> => 
- getUser(userId)
-  .andThen(user => getTripsForUser(user.id))
-  .andThen(getLastestAdmissibleTrip)
-  .map(trip => isInSameCountry(trip.location, nextTrip.location))
+// declare function createProduct(json: string): Result<string,Id>
 
+const createProduct = (json: string): Result<string,Id> => 
+    parseSafe<Product>(json)
+        .andThen(validateProduct)
+        .andThen(checkForDuplicates)
+        .map(product => handleCreation(product))
+
+
+const parseSafe = <T>(json: string): Result<string, T> => {
+    try{
+        const item: T = JSON.parse(json);
+        return success(item)
+    } catch(e){
+        return failure('Invalid json')
+    }
+}

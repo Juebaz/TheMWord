@@ -1,23 +1,37 @@
 
-type User = {id: string }
-type Trip = {id: string, location: string, duration: number}
 
-declare function getUser(name: string): User; //can throw
-declare function getTripsForUser(userid: string): Trip[]; //can throw
-declare function isInSameCountry(location: string, userLocation: string): boolean;
-declare function getLastestAdmissibleTrip(trip: Trip[]): Trip; // some buisness rules that might result in a failure 
+type Product = {id: string}
+type Id = string;
+
+declare function handleCreation(product: Product): Id // Errors possibles
+declare function validateProduct(product: Product): void // Errors possibles
+declare function checkForDuplicates(product: Product): void // Errors possibles
+declare function generateProductCode(product: Product): string 
 
 
+const createProduct = (json: string): Id => {
+  let product: Product;
+    try{
 
-const isLastestTripInSameCountry = (userId: string, nextTrip: Trip): boolean => {
-    const user = getUser(userId); //can throw
+        product = JSON.parse(json);
 
-    const trips = getTripsForUser(user.id); //can throw
-    
-    const lastestTrip = getLastestAdmissibleTrip(trips); // can throw
-    
-    return isInSameCountry(lastestTrip.location, nextTrip.location);  
+    } catch(e){
+
+        throw new Error('invalid json')
+    }
+
+     validateProduct(product); // throw "validationError"
+
+     checkForDuplicates(product); // throw "duplicateError"
+
+     return handleCreation(product); // throw "operation errors"
 }
 
 
-// todo
+// await ValidateLookupDirectoryRecord(operationRecord)
+// .Bind(_ => ValidateGtinFamily(operationRecord, dbContext))
+// .Map(_ => SyncRecord(operationRecord, dbContext, isTestOnly))
+// .Match(
+//     s => SaveChanges(s, operationRecord, dbContext), 
+//     e => SaveChanges(e, operationRecord, dbContext)
+//     );

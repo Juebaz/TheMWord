@@ -26,9 +26,3 @@ const handleUploadFile = (file: File, fileService: FileUploadService, confirmati
     }
 }
 
-
-// validation => result
-// dispatch => result
-// mapreponse  
-
-

@@ -1,5 +1,5 @@
-type Show = { date: string | undefined, name: string }
 
+type Show = { date: string | undefined, name: string }
 declare function parseStringToDate(date: string): Date | undefined
 declare function toDDMMYYY(date: Date): string
 

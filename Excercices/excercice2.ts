@@ -27,11 +27,3 @@ const createProduct = (json: string): Id => {
      return handleCreation(product); // throw "operation errors"
 }
 
-
-// await ValidateLookupDirectoryRecord(operationRecord)
-// .Bind(_ => ValidateGtinFamily(operationRecord, dbContext))
-// .Map(_ => SyncRecord(operationRecord, dbContext, isTestOnly))
-// .Match(
-//     s => SaveChanges(s, operationRecord, dbContext), 
-//     e => SaveChanges(e, operationRecord, dbContext)
-//     );

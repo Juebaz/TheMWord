@@ -6,7 +6,6 @@ type Id = string & {_type: 'id'}; // Opaque type
 declare function handleCreation(product: Product): Id 
 declare function validateProduct(product: Product): Result<string,Product> 
 declare function checkForDuplicates(product: Product): Result<string,Product> 
-declare function generateProductCode(product: Product): string 
 
 // declare function createProduct(json: string): Result<string,Id>
 

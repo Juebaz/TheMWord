@@ -1,26 +1,14 @@
 import { Result, failure, success } from "../Result"
 
 type Product = {id: string}
-type Id = string & {_type: 'id'}; // Opaque type
 
-declare function handleCreation(product: Product): Id 
-declare function validateProduct(product: Product): Result<string,Product> 
-declare function checkForDuplicates(product: Product): Result<string,Product> 
+type Error = { message : string }
 
-// declare function createProduct(json: string): Result<string,Id>
+declare function handleCreation(product: Product): string 
+declare function validateProduct(product: Product): Result<Error,Product> 
+declare function checkForDuplicates(product: Product): Result<Error,Product> 
 
-const createProduct = (json: string): Result<string,Id> => 
-    parseSafe<Product>(json)
-        .andThen(validateProduct)
+const createProduct = (product: Product): Result<Error,string> => 
+        validateProduct(product)
         .andThen(checkForDuplicates)
-        .map(product => handleCreation(product))
-
-
-const parseSafe = <T>(json: string): Result<string, T> => {
-    try{
-        const item: T = JSON.parse(json);
-        return success(item)
-    } catch(e){
-        return failure('Invalid json')
-    }
-}
+        .map(handleCreation)

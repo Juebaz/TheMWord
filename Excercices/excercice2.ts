@@ -1,29 +1,16 @@
 
-
 type Product = {id: string}
-type Id = string;
 
-declare function handleCreation(product: Product): Id // Errors possibles
-declare function validateProduct(product: Product): void // Errors possibles
-declare function checkForDuplicates(product: Product): void // Errors possibles
-declare function generateProductCode(product: Product): string 
+declare function handleCreation(product: Product): string // Erreurs possibles
+declare function validateProduct(product: Product): void // Erreurs possibles
+declare function checkForDuplicates(product: Product): void // Erreurs possibles
 
+const createProduct = (product: Product): string => {
 
-const createProduct = (json: string): Id => {
-  let product: Product;
-    try{
+     validateProduct(product); // can throw 
+     
+     checkForDuplicates(product); // can throw 
 
-        product = JSON.parse(json);
-
-    } catch(e){
-
-        throw new Error('invalid json')
-    }
-
-     validateProduct(product); // throw "validationError"
-
-     checkForDuplicates(product); // throw "duplicateError"
-
-     return handleCreation(product); // throw "operation errors"
+     return handleCreation(product); // can throw 
 }
 
